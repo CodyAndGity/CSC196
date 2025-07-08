@@ -1,5 +1,7 @@
 #pragma once
+#include <SDL3/SDL.h>
 #include <algorithm>
+#include <cmath>
 
 namespace bonzai {
 	namespace math {
@@ -23,5 +25,11 @@ namespace bonzai {
 		using std::min;
 		using std::max;
 		using std::clamp;
+		using std::sqrt;
+		using std::sqrtf;
+		using std::sin;
+		using std::sinf;
+		using std::cos;
+		using std::cosf;
 	}
 }
