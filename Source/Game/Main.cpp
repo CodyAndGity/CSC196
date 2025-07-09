@@ -1,17 +1,21 @@
 #include "Math/Math.h"
 #include "Core/Random.h"
-#include <iostream>
 #include "Renderer/Renderer.h"
-#include <SDL3/SDL.h>
-#include <Math/Vector2.h>
-#include <vector>
+#include "Math/Vector2.h"
 #include "Core/time.h"
+#include "Input/InputSystem.h"
 
+#include <SDL3/SDL.h>
+#include <iostream>
+#include <vector>
 int main(int argc, char* argv[]) {
 	bonzai::Renderer renderer;
 	bonzai::Time time;
 	renderer.initialize();
 	renderer.createWindow("Bonzai Engine", 1280, 1024);
+
+	bonzai::InputSystem input;
+	input.initialize();
     SDL_Init(SDL_INIT_VIDEO);
 
     
@@ -24,6 +28,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 1000; i++) {
         stars.push_back(bonzai::vec2{ bonzai::random::getRandomFloat() * 1280,bonzai::random::getRandomFloat() * 1024 });
         speeds.push_back(bonzai::vec2 { (bonzai::random::getRandomFloat() * 128*2)-128,(bonzai::random::getRandomFloat() * 102*2)-102 });
+        //speeds.push_back(bonzai::vec2 { 200,300});
     };
 
     // Define a rectangle
@@ -38,6 +43,25 @@ int main(int argc, char* argv[]) {
                 quit = true;
             }
         }
+		input.update();
+
+        if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
+            quit = true;
+		}
+        if(input.getKeyPressed(SDL_SCANCODE_LEFT)) {
+            //std::cout << "Left key pressed" << std::endl;
+            for (int i = 0; i < stars.size(); i++) {
+                stars[i].x = bonzai::random::getRandomFloat() * 1280;
+                stars[i].y = bonzai::random::getRandomFloat() * 1024;
+				speeds[i].x = (bonzai::random::getRandomFloat() * 128 * 2) - 128;
+				speeds[i].y = (bonzai::random::getRandomFloat() * 102 * 2) - 102;
+            }
+		}
+        if (input.getMouseButtonPressed(0)) {
+			std::cout << "Left mouse button pressed" << std::endl;
+        }
+		//bonzai::vec2 mouse=input.getMousePosition();
+		//std::cout << "Mouse Position: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
        // bonzai::vec2 speed{ 100.1f,-152.3f };
 
         renderer.setColor(0, 0, 0);
@@ -73,8 +97,8 @@ int main(int argc, char* argv[]) {
    //             renderer.drawPoint( bonzai::random::getRandomInt(1280), bonzai::random::getRandomInt(1024));
    //             renderer.setColor( bonzai::random::getRandomInt(256), bonzai::random::getRandomInt(256), bonzai::random::getRandomInt(256), 255);
    //         }
-
    //     }
+
 		renderer.present();
        
     }

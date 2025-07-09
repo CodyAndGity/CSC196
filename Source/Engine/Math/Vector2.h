@@ -1,5 +1,5 @@
 #pragma once
-#include <Math/Math.h>
+#include "Math.h"
 #include <cassert>
 namespace bonzai {
 	template<typename T>
@@ -33,8 +33,16 @@ namespace bonzai {
 		Vector2& operator*=(float value) {  x *= value; y *= value; return *this ; }
 		Vector2& operator/=(float value) { x /= value; y /= value; return *this ; }
 
-
+		/// <summary>
+		/// Calculates the squared length (magnitude) of a vector.
+		/// </summary>
+		/// <returns>The sum of the squares of the vector's x and y components.</returns>
 		float lengthSquared() { return x * x + y * y; }
+
+		/// <summary>
+		/// Calculates the length (magnitude) of a vector.
+		/// </summary>
+		/// <returns>The length of the vector as a floating-point value.</returns>
 		float length() { return math::sqrtf(lengthSquared()); }
 	};
 	using ivec2 = Vector2<int>;

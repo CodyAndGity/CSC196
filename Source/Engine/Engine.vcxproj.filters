@@ -18,6 +18,9 @@
     <Filter Include="Source\Renderer">
       <UniqueIdentifier>{e78c2e9b-5d36-4b92-aaa3-ba5be4348e62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{af57cd5c-23ea-46f9-9643-05a3d5fc1fc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -28,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="Core\Time.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputSystem.cpp">
+      <Filter>Source\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="Math\Vector2.h">
       <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputSystem.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

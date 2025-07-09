@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include <SDL3/SDL.h>
+
 namespace bonzai {
 
     bool Renderer::initialize() {
@@ -57,4 +58,5 @@ namespace bonzai {
         SDL_DestroyWindow(window);
         SDL_Quit();
     }
+    
 }
