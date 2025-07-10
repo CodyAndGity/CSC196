@@ -79,8 +79,23 @@ int main(int argc, char* argv[]) {
             }
 		}
         if (input.getMouseButtonPressed(bonzai::InputSystem::MouseButton::LEFT)) {
-            bonzai::vec2 mouse=input.getMousePosition();
-            playerPoints.push_back(bonzai::vec2{ mouse.x,mouse.y });
+            playerPoints.push_back(input.getMousePosition());
+
+        }
+        if (input.getMouseButtonDown(bonzai::InputSystem::MouseButton::LEFT)) {
+            bonzai::vec2 dot=input.getMousePosition();
+            
+            if (playerPoints.size()>1) {
+                float distance = (dot - playerPoints.back()).length();
+                if (distance > 10) {
+                    playerPoints.push_back(dot);
+                 
+                }
+            }else {
+                playerPoints.push_back(dot);
+               
+            }
+            
         }
 		//bonzai::vec2 mouse=input.getMousePosition();
 		//std::cout << "Mouse Position: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
@@ -122,7 +137,15 @@ int main(int argc, char* argv[]) {
    //         }
    //     }
 
-        
+        for (int i = 0; i < playerPoints.size(); i++) {
+
+            renderer.setColor(255, 255, 255);
+            renderer.drawPoint(playerPoints[i].x, playerPoints[i].y);
+			if (i < playerPoints.size() - 1 && playerPoints.size()>1){
+			    renderer.drawLine(playerPoints[i].x, playerPoints[i].y, playerPoints[i+1].x, playerPoints[i+1].y );
+            }
+            renderer.drawLine(playerPoints[playerPoints.size()-1].x, playerPoints[playerPoints.size()-1].y, input.getMousePosition().x, input.getMousePosition().y);
+        }
 
 		renderer.present();
        
