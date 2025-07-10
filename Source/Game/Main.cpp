@@ -5,10 +5,19 @@
 #include "Core/time.h"
 #include "Input/InputSystem.h"
 
+#include <fmod.hpp>
 #include <SDL3/SDL.h>
 #include <iostream>
 #include <vector>
 int main(int argc, char* argv[]) {
+    // Initialize engine systems
+     // create audio system
+    FMOD::System* audio;
+    FMOD::System_Create(&audio);
+
+    void* extradriverdata = nullptr;
+    audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
+
 	bonzai::Renderer renderer;
 	bonzai::Time time;
 	renderer.initialize();
@@ -22,10 +31,19 @@ int main(int argc, char* argv[]) {
     SDL_Event e;
     bool quit = false;
 
+
+    FMOD::Sound* sound = nullptr;
+    audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
+
+    audio->playSound(sound, 0, false, nullptr);
+
+    std::vector<bonzai::vec2> playerPoints;
+
+
 	//create a vector of stars
     std::vector<bonzai::vec2> stars;
     std::vector<bonzai::vec2> speeds;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 0; i++) {
         stars.push_back(bonzai::vec2{ bonzai::random::getRandomFloat() * 1280,bonzai::random::getRandomFloat() * 1024 });
         speeds.push_back(bonzai::vec2 { (bonzai::random::getRandomFloat() * 128*2)-128,(bonzai::random::getRandomFloat() * 102*2)-102 });
         //speeds.push_back(bonzai::vec2 { 200,300});
@@ -43,7 +61,10 @@ int main(int argc, char* argv[]) {
                 quit = true;
             }
         }
+        //update engine systems
 		input.update();
+        audio->update();
+
 
         if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
             quit = true;
@@ -57,13 +78,15 @@ int main(int argc, char* argv[]) {
 				speeds[i].y = (bonzai::random::getRandomFloat() * 102 * 2) - 102;
             }
 		}
-        if (input.getMouseButtonPressed(0)) {
-			std::cout << "Left mouse button pressed" << std::endl;
+        if (input.getMouseButtonPressed(bonzai::InputSystem::MouseButton::LEFT)) {
+            bonzai::vec2 mouse=input.getMousePosition();
+            playerPoints.push_back(bonzai::vec2{ mouse.x,mouse.y });
         }
 		//bonzai::vec2 mouse=input.getMousePosition();
 		//std::cout << "Mouse Position: (" << mouse.x << ", " << mouse.y << ")" << std::endl;
        // bonzai::vec2 speed{ 100.1f,-152.3f };
 
+        //draw
         renderer.setColor(0, 0, 0);
 		renderer.clear();
         for (int i = 0; i < stars.size();i++) {
@@ -98,6 +121,8 @@ int main(int argc, char* argv[]) {
    //             renderer.setColor( bonzai::random::getRandomInt(256), bonzai::random::getRandomInt(256), bonzai::random::getRandomInt(256), 255);
    //         }
    //     }
+
+        
 
 		renderer.present();
        

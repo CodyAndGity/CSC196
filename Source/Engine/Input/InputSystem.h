@@ -5,6 +5,12 @@
 namespace bonzai {
 	class InputSystem {
 	public:
+		enum class MouseButton : uint8_t {
+			LEFT,
+			MIDDLE,
+			RIGHT,
+		};
+	public:
 		InputSystem() = default;
 		bool initialize();
 		void shutdown();
@@ -21,10 +27,10 @@ namespace bonzai {
 		const vec2& getPreviousMousePosition() const { return previousMousePosition; }
 
 		//Mouse input
-		bool getMouseButtonDown(uint8_t button) const { assert (button < 3); return mouseButtonState[button]; }
-		bool getPreviousMouseButtonDown(uint8_t button) const { assert (button < 3); return previousMouseButtonState[button]; }
-		bool getMouseButtonPressed(uint8_t button) const { assert (button < 3); return mouseButtonState[button] &&!previousMouseButtonState[button]; }
-		bool getMouseButtonReleased(uint8_t button) const { assert (button < 3); return !mouseButtonState[button] &&previousMouseButtonState[button]; }
+		bool getMouseButtonDown(MouseButton button) const {  return mouseButtonState[(uint8_t)button]; }
+		bool getPreviousMouseButtonDown(MouseButton button) const {  return previousMouseButtonState[(uint8_t)button]; }
+		bool getMouseButtonPressed(MouseButton button) const {  return mouseButtonState[(uint8_t)button] &&!previousMouseButtonState[(uint8_t)button]; }
+		bool getMouseButtonReleased(MouseButton button) const {  return !mouseButtonState[(uint8_t)button] &&previousMouseButtonState[(uint8_t)button]; }
 	private:
 		std::vector<bool> keyboardState;
 		std::vector<bool> previousKeyboardState;

@@ -26,9 +26,9 @@ namespace bonzai {
         previousMousePosition = mousePosition;
 		uint32_t mouseButtonState= SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
 		previousMouseButtonState = this->mouseButtonState;
-		this->mouseButtonState[0] = (mouseButtonState & SDL_BUTTON_LMASK);
-		this->mouseButtonState[1] = (mouseButtonState & SDL_BUTTON_MMASK);
-		this->mouseButtonState[2] = (mouseButtonState & SDL_BUTTON_RMASK);
+		this->mouseButtonState[(uint8_t)MouseButton::LEFT] = (mouseButtonState & SDL_BUTTON_LMASK);
+		this->mouseButtonState[(uint8_t)MouseButton::MIDDLE] = (mouseButtonState & SDL_BUTTON_MMASK);
+		this->mouseButtonState[(uint8_t)MouseButton::RIGHT] = (mouseButtonState & SDL_BUTTON_RMASK);
 
     }
 }
