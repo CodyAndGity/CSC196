@@ -17,12 +17,13 @@ int main(int argc, char* argv[]) {
 
     void* extradriverdata = nullptr;
     audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
-
+	// creating renderer system and time system
 	bonzai::Renderer renderer;
 	bonzai::Time time;
+	//initialize renderer and create window
 	renderer.initialize();
 	renderer.createWindow("Bonzai Engine", 1280, 1024);
-
+	//creating and initializing input system
 	bonzai::InputSystem input;
 	input.initialize();
     SDL_Init(SDL_INIT_VIDEO);
@@ -31,12 +32,14 @@ int main(int argc, char* argv[]) {
     SDL_Event e;
     bool quit = false;
 
-
+    //test sound
     FMOD::Sound* sound = nullptr;
    // audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
 
    // audio->playSound(sound, 0, false, nullptr);
-
+   
+   
+   //creating sounds
     int8_t soundIndex = 0;
     std::vector<FMOD::Sound*> sounds;
     audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound);
@@ -171,6 +174,7 @@ int main(int argc, char* argv[]) {
    //         }
    //     }
 
+		//draw player points and lines
         for (int i = 0; i < playerPoints.size(); i++) {
 
             renderer.setColor(255, 255, 255);
