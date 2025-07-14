@@ -3,13 +3,13 @@
 #include <cassert>
 namespace bonzai {
 	template<typename T>
-
+	
 	struct Vector3 {
 		T x, y,z;
 		Vector3() = default;
 		Vector3(T x, T y,T z) : x(x), y(y), z(z) {}
 
-			//return (index == 0) ? x : y; }
+			
 		T operator [] (unsigned int index) const {assert(index < 3);  return (&x)[index];}
 		T& operator [] (unsigned int index) {assert(index < 3);  return (&x)[index];}
 

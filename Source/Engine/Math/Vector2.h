@@ -9,7 +9,7 @@ namespace bonzai {
 		Vector2() = default;
 		Vector2(T x, T y) : x(x), y(y) {}
 
-			//return (index == 0) ? x : y; }
+			
 		T operator [] (unsigned int index) const {assert(index < 2);  return (&x)[index];}
 		T& operator [] (unsigned int index) {assert(index < 2);  return (&x)[index];}
 
