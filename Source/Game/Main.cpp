@@ -33,9 +33,29 @@ int main(int argc, char* argv[]) {
 
 
     FMOD::Sound* sound = nullptr;
-    audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
+   // audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
 
-    audio->playSound(sound, 0, false, nullptr);
+   // audio->playSound(sound, 0, false, nullptr);
+
+    int8_t soundIndex = 0;
+    std::vector<FMOD::Sound*> sounds;
+    audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    audio->createSound("clap.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    audio->createSound("cowbell.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    audio->createSound("open-hat.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
+
+    audio->createSound("snare.wav", FMOD_DEFAULT, 0, &sound);
+    sounds.push_back(sound);
 
     std::vector<bonzai::vec2> playerPoints;
 
@@ -43,11 +63,11 @@ int main(int argc, char* argv[]) {
 	//create a vector of stars
     std::vector<bonzai::vec2> stars;
     std::vector<bonzai::vec2> speeds;
-    for (int i = 0; i < 0; i++) {
-        stars.push_back(bonzai::vec2{ bonzai::random::getRandomFloat() * 1280,bonzai::random::getRandomFloat() * 1024 });
-        speeds.push_back(bonzai::vec2 { (bonzai::random::getRandomFloat() * 128*2)-128,(bonzai::random::getRandomFloat() * 102*2)-102 });
-        //speeds.push_back(bonzai::vec2 { 200,300});
-    };
+    //for (int i = 0; i < 0; i++) {
+    //    stars.push_back(bonzai::vec2{ bonzai::random::getRandomFloat() * 1280,bonzai::random::getRandomFloat() * 1024 });
+    //    speeds.push_back(bonzai::vec2 { (bonzai::random::getRandomFloat() * 128*2)-128,(bonzai::random::getRandomFloat() * 102*2)-102 });
+    //    //speeds.push_back(bonzai::vec2 { 200,300});
+    //};
 
     // Define a rectangle
     //SDL_FRect greenSquare{ 270, 190, 200, 200 };
@@ -69,15 +89,29 @@ int main(int argc, char* argv[]) {
         if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
             quit = true;
 		}
+
+
+		/// sound selection and play
         if(input.getKeyPressed(SDL_SCANCODE_LEFT)) {
-            //std::cout << "Left key pressed" << std::endl;
-            for (int i = 0; i < stars.size(); i++) {
-                stars[i].x = bonzai::random::getRandomFloat() * 1280;
-                stars[i].y = bonzai::random::getRandomFloat() * 1024;
-				speeds[i].x = (bonzai::random::getRandomFloat() * 128 * 2) - 128;
-				speeds[i].y = (bonzai::random::getRandomFloat() * 102 * 2) - 102;
+            if(soundIndex > 0) {
+                soundIndex--;
+            }
+            else {
+				soundIndex = sounds.size() - 1;
             }
 		}
+        if (input.getKeyPressed(SDL_SCANCODE_RIGHT)) {
+            if (soundIndex < sounds.size() - 1) {
+                soundIndex++;
+            }else{
+				soundIndex = 0;
+			}
+        }
+        if (input.getKeyPressed(SDL_SCANCODE_SPACE)) {
+            audio->playSound(sounds[soundIndex], 0, false, nullptr);
+        }
+
+        //mouse drawing system
         if (input.getMouseButtonPressed(bonzai::InputSystem::MouseButton::LEFT)) {
             playerPoints.push_back(input.getMousePosition());
 
