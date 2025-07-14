@@ -4,19 +4,17 @@
 #include "Math/Vector2.h"
 #include "Core/time.h"
 #include "Input/InputSystem.h"
+#include "Audio/AudioSystem.h"
 
-#include <fmod.hpp>
-#include <SDL3/SDL.h>
+
 #include <iostream>
 #include <vector>
 int main(int argc, char* argv[]) {
     // Initialize engine systems
      // create audio system
-    FMOD::System* audio;
-    FMOD::System_Create(&audio);
-
-    void* extradriverdata = nullptr;
-    audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
+    bonzai::AudioSystem audio;
+	audio.initialize();
+   
 	// creating renderer system and time system
 	bonzai::Renderer renderer;
 	bonzai::Time time;
@@ -40,25 +38,23 @@ int main(int argc, char* argv[]) {
    
    
    //creating sounds
-    int8_t soundIndex = 0;
-    std::vector<FMOD::Sound*> sounds;
-    audio->createSound("bass.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
 
-    audio->createSound("clap.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
+    audio.addSound("bass.wav", "bass");
+    audio.addSound("clap.wav", "clap");
+    audio.addSound("close-hat.wav", "close-hat");
+    audio.addSound("cowbell.wav", "cowbell");
+    audio.addSound("open-hat.wav", "open-hat");
+    audio.addSound("snare.wav", "snare");
+    uint8_t soundIndex = 0;
+    std::vector<std::string> soundsNames;
+	soundsNames.push_back("bass");
+	soundsNames.push_back("clap");
+	soundsNames.push_back("close-hat");
+	soundsNames.push_back("cowbell");
+	soundsNames.push_back("open-hat");
+	soundsNames.push_back("snare");
 
-    audio->createSound("close-hat.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
-    audio->createSound("cowbell.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
-    audio->createSound("open-hat.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
-
-    audio->createSound("snare.wav", FMOD_DEFAULT, 0, &sound);
-    sounds.push_back(sound);
+    
 
     std::vector<bonzai::vec2> playerPoints;
 
@@ -86,7 +82,7 @@ int main(int argc, char* argv[]) {
         }
         //update engine systems
 		input.update();
-        audio->update();
+        audio.update();
 
 
         if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
@@ -100,18 +96,18 @@ int main(int argc, char* argv[]) {
                 soundIndex--;
             }
             else {
-				soundIndex = sounds.size() - 1;
+				soundIndex = soundsNames.size() - 1;
             }
 		}
         if (input.getKeyPressed(SDL_SCANCODE_RIGHT)) {
-            if (soundIndex < sounds.size() - 1) {
+            if (soundIndex < soundsNames.size() - 1) {
                 soundIndex++;
             }else{
 				soundIndex = 0;
 			}
         }
         if (input.getKeyPressed(SDL_SCANCODE_SPACE)) {
-            audio->playSound(sounds[soundIndex], 0, false, nullptr);
+            audio.playSound(soundsNames[soundIndex]);
         }
 
         //mouse drawing system
@@ -190,6 +186,7 @@ int main(int argc, char* argv[]) {
     }
 
 	renderer.shutdown();
+	audio.shutdown();
 
     return 0;
 }
