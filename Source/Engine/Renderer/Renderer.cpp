@@ -37,6 +37,10 @@ namespace bonzai {
 
     }
 
+    void Renderer::setColor(float r, float g, float b, float a) {
+		SDL_SetRenderDrawColorFloat(renderer, r, g, b, a);
+    }
+
     void Renderer::drawLine(float x1, float y1, float x2, float y2) {
         SDL_RenderLine(renderer, x1, y1, x2, y2);
     }
