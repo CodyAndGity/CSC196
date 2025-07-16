@@ -7,7 +7,8 @@
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
 #include "Math/Vector3.h"
-
+#include "Math/Transform.h"
+#include "Game/Actor.h"
 
 #include <iostream>
 #include <vector>
@@ -36,8 +37,20 @@ int main(int argc, char* argv[]) {
         {-10,-10},
         {10,-10 }
     };
-    bonzai::Model model{ points, {0,0,1} };
+    bonzai::Model* model=new bonzai::Model{ points, {0,0,1} };
     
+	std::vector<bonzai::Actor> actors;
+    for (int i = 0; i < 20; i++) {
+
+        bonzai::Transform transform{ {bonzai::random::getRandomFloat() * 1280,
+                                        bonzai::random::getRandomFloat() * 1024}
+        ,bonzai::math::degToReg(bonzai::random::getRandomInt(360)),
+            bonzai::random::getRandomFloat()*50};
+
+	    bonzai::Actor actor{ transform, model };
+		actors.push_back(actor);
+
+    }
     SDL_Event e;
     bool quit = false;
 
@@ -60,12 +73,6 @@ int main(int argc, char* argv[]) {
 
     
 
-    
-
-
-	
-    
-
 	//Main loop
     while (!quit) {
 		time.tick();
@@ -74,17 +81,45 @@ int main(int argc, char* argv[]) {
                 quit = true;
             }
         }
+        if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
+            quit = true;
+		}
+
         //update engine systems
 		input.update();
         audio.update();
 
 
-        if(input.getKeyDown(SDL_SCANCODE_ESCAPE)) {
-            quit = true;
-		}
 
-       
-		
+        bonzai::vec2 direction{ 0,0 };
+       /* if (input.getKeyDown(SDL_SCANCODE_A)) {
+			transform.rotation -= bonzai::math::degToReg(time.getTime()) * time.getDeltaTime();
+        }
+        if (input.getKeyDown(SDL_SCANCODE_D)) {
+            transform.rotation += bonzai::math::degToReg(time.getTime()) * time.getDeltaTime();
+        }*/
+        for (auto& actor : actors) {
+
+            actor.getTransform().rotation += bonzai::math::degToReg(time.getTime() * 2) * time.getDeltaTime();
+
+            int speed =  510;
+            if (input.getKeyDown(SDL_SCANCODE_W)) {
+                direction.y = -1;// speed* time.getDeltaTime();
+            }
+            if (input.getKeyDown(SDL_SCANCODE_S)) {
+                direction.y = 1;// speed* time.getDeltaTime();
+            }
+            if (input.getKeyDown(SDL_SCANCODE_A)) {
+                direction.x = -1;// speed* time.getDeltaTime();
+            }
+            if (input.getKeyDown(SDL_SCANCODE_D)) {
+                direction.x = 1;// speed* time.getDeltaTime();
+            }
+            if (direction.lengthSquared() > 0) {
+                direction = direction.normalized();
+            }
+            actor.getTransform().position += (direction * speed) * time.getDeltaTime();
+        }
 
         //draw
         bonzai::vec3 color{0,0,0};
@@ -94,13 +129,17 @@ int main(int argc, char* argv[]) {
        
 
 		
-		model.draw(renderer,input.getMousePosition(), time.getTime(), 5);
+		//model.draw(renderer,input.getMousePosition(), time.getTime(), 5);
+        for (auto& actor : actors) {
+            actor.draw(renderer);
+        }
 		
 
 		renderer.present();
        
     }
-
+	delete(model);
+	model = nullptr;
 	renderer.shutdown();
 	audio.shutdown();
 

@@ -17,4 +17,13 @@ namespace bonzai {
 		}
 	}
 
+	/// <summary>
+	/// Draws the model using the specified renderer and transformation.
+	/// </summary>
+	/// <param name="renderer">The renderer used to draw the model.</param>
+	/// <param name="transform">The transformation to apply, including position, rotation, and scale.</param>
+	void Model::draw(Renderer& renderer, const Transform& transform){
+		draw(renderer, transform.position, transform.rotation, transform.scale);
+	}
+
 }
