@@ -1,11 +1,14 @@
 #pragma once
+
 #include "../Math/Transform.h"
 #include "../Renderer/Model.h"
+
+#include <memory>
 namespace bonzai {
 	class Actor {
 	public:
 		Actor() = default;
-		Actor(const Transform& transform, Model* model) :
+		Actor(const Transform& transform, std::shared_ptr<class Model> model) :
 			transform{ transform },
 			model{ model } {
 		}
@@ -16,7 +19,8 @@ namespace bonzai {
 		Transform& getTransform() { return transform; }
 	protected:
 		Transform transform;
-		Model* model;
+		std::shared_ptr<Model> model;
+
 
 	};
 }
