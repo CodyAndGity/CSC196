@@ -34,22 +34,22 @@ int main(int argc, char* argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
 
     std::vector<bonzai::vec2> points = {
-        {10,10},
-        {-10,10},
-        {-10,-10},
-        {10,-10 }
+        {-10,-5},
+        {-5,0},
+        {-10,5},
+        {10,0 }
     };
 
 	bonzai::Scene scene;
     std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(points, bonzai::vec3{ 0,0,1 });
    //bonzai::Model* model=new bonzai::Model{ points, {0,0,1} };
 	std::vector<std::unique_ptr< bonzai::Actor>> actors;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 1; i++) {
 
-		bonzai::Transform transform{ {bonzai::random::getRandomFloat() * 1280,//position
-                                        bonzai::random::getRandomFloat() * 1024}
-        ,bonzai::math::degToReg(bonzai::random::getRandomFloat()*360),//rotation
-            bonzai::random::getRandomFloat()*10};//size
+		bonzai::Transform transform{ { 1280/2,//position
+                                         1024/2}
+        ,0,//rotation
+            1};//size
 
         std::unique_ptr<Player> player= std::make_unique<Player>( transform, model );
 		scene.AddActor(std::move(player));
