@@ -35,8 +35,8 @@ namespace bonzai {
 		std::vector<bool> keyboardState;
 		std::vector<bool> previousKeyboardState;
 
-		vec2 mousePosition;
-		vec2 previousMousePosition;
+		vec2 mousePosition{ 0,0 };
+		vec2 previousMousePosition{ 0,0 };
 
 		std::array<bool,3> mouseButtonState = { false, false, false };
 		std::array<bool, 3> previousMouseButtonState = { false, false, false };
