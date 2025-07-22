@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <iostream>
-
+#include <SDL3_ttf/SDL_ttf.h>
 namespace bonzai {
 	class Renderer {
 	public:
@@ -20,10 +20,16 @@ namespace bonzai {
 
 		void drawLine(float x1, float y1, float x2, float y2);
 		void drawPoint(float x1, float y1);
+
+		int getWidth() const { return width; }
+		int getHeight() const { return height; }
 	private:
 		SDL_Window* window = nullptr;
 		SDL_Renderer* renderer = nullptr;
+		friend class Text;
 
+		int width{ 0 };
+		int height{ 0 };
 		
 	};
 }

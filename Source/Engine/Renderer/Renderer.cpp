@@ -4,17 +4,22 @@
 namespace bonzai {
 
     bool Renderer::initialize() {
-        if (!(SDL_Init(SDL_INIT_VIDEO))) {
-            std::cerr << "SDL_Iint Error:" << SDL_GetError() << std::endl;
+        if (!SDL_Init(SDL_INIT_VIDEO)) {
+            std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
             return false;
+        }
 
+        if (!TTF_Init()) {
+            std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
+            return false;
         }
 
         return true;
     }
 
-    bool Renderer::createWindow(const std::string& name, int width, int height)
-    {
+    bool Renderer::createWindow(const std::string& name, int width, int height)   {
+		this->width = width;
+		this->height = height;
         window = SDL_CreateWindow(name.c_str(), width, height, 0);
         if (window == nullptr) {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
@@ -58,6 +63,7 @@ namespace bonzai {
     }
 
     void Renderer::shutdown() {
+        TTF_Quit();
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();

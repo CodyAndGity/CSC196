@@ -7,11 +7,12 @@
 
 #include "Game/SpaceGame.h"
 #include "Engine.h"
+#include "Renderer/Font.h"
+#include "Renderer/Text.h"
 
 #include <iostream>
 #include <vector>
 #include <memory>
-
 
 
 int main(int argc, char* argv[]) {
@@ -29,10 +30,12 @@ int main(int argc, char* argv[]) {
     bool quit = false;
 
     //test sound
-    FMOD::Sound* sound = nullptr;
-  
-   
     
+    bonzai::Font* font = new bonzai::Font();
+    font->load("radiospacebitmap.ttf", 20);
+   
+    bonzai::Text* text = new bonzai:: Text(font);
+    text->create(bonzai::getEngine().getRenderer(), "Hello World", bonzai::vec3{ 1, 1, 1 });
 
 	//Main loop
     while (!quit) {
@@ -63,7 +66,7 @@ int main(int argc, char* argv[]) {
 		
 		
 		game->draw();
-
+        text->draw(bonzai::getEngine().getRenderer(), 40.0f, 40.0f);
         bonzai::getEngine().getRenderer().present();
        
     }
