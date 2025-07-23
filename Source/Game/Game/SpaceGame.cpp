@@ -40,7 +40,7 @@ bool SpaceGame::initialize(){
 { -10, 2 }
 	};
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 100; i++) {
     std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(points, 
         bonzai::vec3{ bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat() });
         bonzai::Transform transform{ bonzai::vec2{ bonzai::random::getRandomFloat() * bonzai::getEngine().getRenderer().getWidth()
