@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <string>
 namespace bonzai {
+	class Actor;
+
 
 	class Scene {
 	public:
@@ -10,9 +13,11 @@ namespace bonzai {
 		void update(float deltaTime);
 		void draw(class Renderer& renderer);
 
-		void AddActor(std::unique_ptr<class Actor> actor);
+		void AddActor(std::unique_ptr< Actor> actor);
+
+		 Actor* getActorByName(const std::string& name);
 	private:
-		std::vector<std::unique_ptr< class Actor>> actors;
+		std::vector<std::unique_ptr<  Actor>> actors;
 
 
 	};

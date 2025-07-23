@@ -12,6 +12,8 @@ namespace bonzai {
 		Transform transform;
 		std::shared_ptr<Model> model;
 		vec2 velocity{ 0,0 };
+		float damping{ 0.0f };
+		class Scene* scene = nullptr; // Pointer to the scene this actor belongs to
 
 	public:
 		Actor() = default;
@@ -22,8 +24,8 @@ namespace bonzai {
 
 		virtual void update(float deltaTime);
 		virtual void draw(class Renderer& renderer);
-
 		Transform& getTransform() { return transform; }
+
 	protected:
 		
 

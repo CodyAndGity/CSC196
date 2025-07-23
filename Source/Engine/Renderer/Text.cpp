@@ -2,12 +2,21 @@
 #include "Font.h"
 #include "Renderer.h"
 namespace bonzai {
+	/// <summary>
+	/// Destroys the Text object and releases its associated SDL texture if it exists.
+	/// </summary>
 	Text::~Text() {
 		if (texture != nullptr) {
 			SDL_DestroyTexture(texture);
 		}
 	}
-
+	/// <summary>
+	/// Creates a text texture using the specified renderer, text string, and color.
+	/// </summary>
+	/// <param name="renderer">Reference to the Renderer object used to create the texture.</param>
+	/// <param name="text">The string to render as text.</param>
+	/// <param name="color">The color of the text, represented as a vec3 (RGB components in the range [0, 1]).</param>
+	/// <returns>True if the text texture was successfully created; false otherwise.</returns>
 	bool Text::create(Renderer& renderer, const std::string& text, const vec3& color) {
 		// create a surface using the font, text string and color
 		SDL_Color c{ (uint8_t)(color.r * 255), (uint8_t)(color.g * 255), (uint8_t)(color.b * 255), 255 };
@@ -30,7 +39,12 @@ namespace bonzai {
 
 		return true;
 	}
-
+	/// <summary>
+	/// Draws the text texture at the specified position using the given renderer.
+	/// </summary>
+	/// <param name="renderer">The renderer used to draw the text.</param>
+	/// <param name="x">The x-coordinate where the text will be drawn.</param>
+	/// <param name="y">The y-coordinate where the text will be drawn.</param>
 	void Text::draw(Renderer& renderer, float x, float y) {
 		// get the texture width and height
 		float width, height;

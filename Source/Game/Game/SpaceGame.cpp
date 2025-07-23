@@ -3,6 +3,8 @@
 #include "Renderer/Model.h"
 #include "Player.h"
 #include "Engine.h"
+#include "Enemy.h"
+#include "Core/Random.h"
 
 #include "Core/time.h"
 
@@ -26,20 +28,29 @@ bool SpaceGame::initialize(){
             4 };//size
 
     std::unique_ptr<Player> player = std::make_unique<Player>(transform, model);
+	player->damping = 0.0001f; // Set damping to a very low value for more responsive movement
+	player->speed = 510.0f; // Set speed to a higher value for faster movement
+	player->rotateSpeed = 180.0f; // Set rotation speed 
+	player->name = "Player"; // Set the name of the player actor
+
     scene->AddActor(std::move(player));
-    /*
-    for (int i = 0; i < 1; i++) {
+    points = {
+        { 10, 0 },
+{ -10, -1 },
+{ -10, 2 }
+	};
 
-        bonzai::Transform transform{ { 1280 / 2,//position
-                                         1024 / 2}
-        ,0,//rotation
-            10 };//size
-
-        std::unique_ptr<Player> player = std::make_unique<Player>(transform, model);
-        scene->AddActor(std::move(player));
-
+    for (int i = 0; i < 1000; i++) {
+    std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(points, 
+        bonzai::vec3{ bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat() });
+        bonzai::Transform transform{ bonzai::vec2{ bonzai::random::getRandomFloat() * bonzai::getEngine().getRenderer().getWidth()
+            , bonzai::random::getRandomFloat() * bonzai::getEngine().getRenderer().getHeight() }, 0, 3 };
+        std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
+		enemy->speed = 100.0f + bonzai::random::getRandomFloat() * 100.0f; // Random speed between 100 and 200
+		enemy->damping = 0.0001f; 
+        scene->AddActor(std::move(enemy));
     }
-    */
+    
 
     return true;
 }

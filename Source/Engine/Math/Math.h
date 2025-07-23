@@ -21,6 +21,25 @@ namespace bonzai::math {
 	/// <returns>The angle in radians.</returns>
 	constexpr float degToReg(float degrees) { return degrees * (pi / 180.0f); }
 
+
+	constexpr int wrap(int value, int min, int max) {
+		int range = max - min;
+		int result = (value - min) % range;
+		if (result < 0) {
+			result += range;
+		}
+		return result + min;
+	}
+	inline float wrap(float value, float min, float max) {
+		float range = max - min;
+		float result = std::fmod(value - min, range);
+		if (result < 0) {
+			result += range;
+		}
+		return result + min;
+	}
+
+
 	//*pirate music plays*
 	using std::min;
 	using std::max;
