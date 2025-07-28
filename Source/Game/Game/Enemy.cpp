@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Engine.h"
 #include "Framework/Scene.h"
-
+#include "Player.h"
 
 /// <summary>
 /// Updates the enemy's state, moving it towards the player and handling screen wrapping.
@@ -10,7 +10,7 @@
 void Enemy::update(float deltaTime){
 	
 
-	Actor* player = scene->getActorByName("Player");
+	Player* player = scene->getActorByName<Player>("Player");
 
     
     if (player) {

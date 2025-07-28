@@ -15,8 +15,11 @@
 #include <memory>
 
 
-int main(int argc, char* argv[]) {
 
+
+
+int main(int argc, char* argv[]) {
+  
     // Initialize engine systems
 	bonzai::getEngine().initialize();
    
@@ -48,7 +51,7 @@ int main(int argc, char* argv[]) {
         //update engine systems
         bonzai::getEngine().update();
         //update game
-        game->update();
+        game->update(bonzai::getEngine().getTime().getDeltaTime());
         
         if(bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_ESCAPE)) {
             quit = true;
