@@ -12,8 +12,8 @@ namespace bonzai {
 		virtual void draw() = 0;
 
 	protected:
-		int score = 0;
-		int lives = 3;
+		int score{ 0 };
+		int lives{ 3 };
 		std::unique_ptr<class Scene> scene;
 	};
 }

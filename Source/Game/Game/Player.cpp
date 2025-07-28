@@ -33,19 +33,11 @@ void Player::update(float deltaTime){
     if (slowDown) {
         this->damping -= 0.0005f;
     }
-        /*
-        if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_S)) {
-            direction.y = 1;
-        }
-        if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_A)) {
-            direction.x = -1;
-        }
-        if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_D)) {
-            direction.x = 1;
-        }
-        if (direction.lengthSquared() > 0) {
-            direction = direction.normalized();
-        }*/
+    
+    if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_SPACE)) {
+        //get scene somehow to add a projectile
+
+    }
     
 
 }

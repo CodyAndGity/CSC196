@@ -4,7 +4,7 @@ namespace bonzai {
 	struct Transform {
 		vec2 position{ 0,0 };
 		float rotation{ 0 }; // in radians
-		float scale=1;
+		float scale { 0 };
 		Transform() = default;
 		Transform(const vec2& position, float rotation = 0, float scale=1)
 			: position(position),

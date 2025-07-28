@@ -16,7 +16,7 @@ namespace bonzai {
 	private:
 		bool checkFMODResult(FMOD_RESULT result);
 	private:
-		FMOD::System* system=nullptr;
+		FMOD::System* system{ nullptr };
 		std::map<std::string, FMOD::Sound*> sounds;
 
 

@@ -13,7 +13,7 @@ namespace bonzai {
 		std::shared_ptr<Model> model;
 		vec2 velocity{ 0,0 };
 		float damping{ 0.0f };
-		class Scene* scene = nullptr; // Pointer to the scene this actor belongs to
+		class Scene* scene{ nullptr }; // Pointer to the scene this actor belongs to
 
 	public:
 		Actor() = default;

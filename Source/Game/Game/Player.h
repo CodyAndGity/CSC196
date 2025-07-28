@@ -3,8 +3,8 @@
 
 class Player : public bonzai::Actor {
 public:
-	float speed = 0;
-	float rotateSpeed = 0;
+	float speed{ 0 };
+	float rotateSpeed{ 0 };
 public:
 	Player() = default;
 	Player(const bonzai::Transform& transform, std::shared_ptr<class bonzai::Model> model) :

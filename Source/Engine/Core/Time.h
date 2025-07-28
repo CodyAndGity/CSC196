@@ -21,8 +21,8 @@ namespace bonzai {
 			return deltaTime;
 		}
 	private:
-		float time=0;
-		float deltaTime=0;
+		float time{ 0 };
+		float deltaTime{ 0 };
 
 		clock::time_point startTime;
 		clock::time_point frameTime;

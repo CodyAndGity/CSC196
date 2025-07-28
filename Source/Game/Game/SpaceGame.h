@@ -27,5 +27,5 @@ public:
 private:
 
 	GameState gameState = GameState::INITIALIZING;
-	float enemySpawnTimer = 0.0f;
+	float enemySpawnTimer{ 0.0f };
 };

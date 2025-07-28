@@ -3,7 +3,7 @@
 
 class Enemy : public bonzai::Actor {
 public:
-	float speed = 200;
+	float speed{ 200 };
 	Enemy() = default;
 	Enemy(const bonzai::Transform& transform, std::shared_ptr<class bonzai::Model> model) :
 		bonzai::Actor{ transform, model }
