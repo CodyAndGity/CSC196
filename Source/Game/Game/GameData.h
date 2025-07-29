@@ -4,4 +4,5 @@
 namespace GameData{
 	extern std::vector<bonzai::vec2> shipPoints;
 	extern std::vector<bonzai::vec2> enemyPoints;
+	extern std::vector<bonzai::vec2> projectilePoints;
 }

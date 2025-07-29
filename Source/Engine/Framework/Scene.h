@@ -2,14 +2,15 @@
 #include "../Core/StringHelper.h"
 #include <vector>
 #include <memory>
+#include <list>
 #include <string>
 namespace bonzai {
 	class Actor;
-
+	class Game;
 
 	class Scene {
 	public:
-		Scene() = default;
+		Scene(Game* game) : game{ game }{}
 
 		void update(float deltaTime);
 		void draw(class Renderer& renderer);
@@ -21,8 +22,10 @@ namespace bonzai {
 
 		 template<typename T=Actor>
 		 std::vector<T*> getActorByTag(const std::string& tag);
+		  Game* getGame() const { return game; }
 	private:
-		std::vector<std::unique_ptr<  Actor>> actors;
+		 Game* game{ nullptr };
+		std::list<std::unique_ptr<  Actor>> actors;
 
 
 	};

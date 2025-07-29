@@ -34,11 +34,11 @@ int main(int argc, char* argv[]) {
 
     //test sound
     
-    bonzai::Font* font = new bonzai::Font();
+	std::shared_ptr<bonzai::Font> font = std::make_shared<bonzai::Font>();
     font->load("radiospacebitmap.ttf", 20);
    
     bonzai::Text* text = new bonzai:: Text(font);
-    text->create(bonzai::getEngine().getRenderer(), "Hello World", bonzai::vec3{ 1, 1, 1 });
+    text->create(bonzai::getEngine().getRenderer(), "Press space to start", bonzai::vec3{ 1, 1, 1 });
 
 	//Main loop
     while (!quit) {
@@ -75,7 +75,8 @@ int main(int argc, char* argv[]) {
     }
 	
     bonzai::getEngine().shutdown();
-	
+    game->shutdown();
+	game.release();
 
     return 0;
 }

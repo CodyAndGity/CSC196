@@ -5,16 +5,21 @@
 #include "Engine.h"
 #include "Enemy.h"
 #include "Core/Random.h"
-
+#include "Renderer/Font.h"
 #include "Core/time.h"
 #include "GameData.h"
 
 bool SpaceGame::initialize(){
 
-	scene = std::make_unique<bonzai::Scene>();
-   
+	scene = std::make_unique<bonzai::Scene>(this);
+	titleFont = std::make_shared<bonzai::Font>();
+	titleFont->load("SpaceFont.ttf", 128.0f);
 
-   
+	uiFont = std::make_shared<bonzai::Font>();
+	uiFont->load("SpaceFont.ttf", 32.0f);
+
+	//titleText = std::make_unique<bonzai::Text>(titleFont);
+	
     std::vector<std::unique_ptr< bonzai::Actor>> actors;
     
 
@@ -44,8 +49,8 @@ void SpaceGame::update(float deltaTime){
     {
         std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::shipPoints, bonzai::vec3{ 0,0,1 });
         bonzai::Transform transform{ { (float)bonzai::getEngine().getRenderer().getWidth() * 0.5f,
-                                         (float)bonzai::getEngine().getRenderer().getHeight() * 0.5f}//position
-        ,0,//rotation
+            (float)bonzai::getEngine().getRenderer().getHeight() * 0.5f}//position
+            ,0,//rotation
             4 };//size
         std::unique_ptr<Player> player = std::make_unique<Player>(transform, model);
         player->damping = 0.0001f; // Set damping to a very low value for more responsive movement

@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "Framework/Scene.h"
 #include "Player.h"
+#include "Framework/Game.h"
 
 /// <summary>
 /// Updates the enemy's state, moving it towards the player and handling screen wrapping.
@@ -44,4 +45,11 @@ void Enemy::update(float deltaTime){
     transform.position.y = bonzai::math::wrap(transform.position.y, 0.0f, (float)bonzai::getEngine().getRenderer().getHeight());
     
     Actor::update(deltaTime);
+}
+
+void Enemy::onCollision(Actor* other){
+    if (tag !=other->tag) {
+        this->destroyed = true;
+		scene->getGame()->addScore(100);
+    }
 }

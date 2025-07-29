@@ -13,9 +13,13 @@ public:
 
 	void update(float deltaTime) override;
 
+	// Inherited via Actor
+	void onCollision(Actor* other) override;
 
 
 private:
+
+
 
 
 };

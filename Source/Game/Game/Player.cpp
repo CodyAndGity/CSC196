@@ -1,6 +1,10 @@
 #include "Player.h"
 #include "Engine.h"
 #include "Input/InputSystem.h"
+#include "GameData.h"
+#include "Framework/Scene.h"
+#include "Projectile.h"
+#include "Renderer/Model.h"
 void Player::update(float deltaTime){
    
 	bool slowDown = false;
@@ -33,11 +37,30 @@ void Player::update(float deltaTime){
     if (slowDown) {
         this->damping -= 0.0005f;
     }
-    
-    if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_SPACE)) {
-        //get scene somehow to add a projectile
+	shootTimer -= deltaTime;
+    if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_SPACE)&& shootTimer <=0) {
+		shootTimer = shootCooldown; // Reset the shoot timer
+        
+        std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::projectilePoints, bonzai::vec3{ 1.0f,1.0f,1.0f });
+        bonzai::Transform transform{ this->transform.position,this->transform.rotation, 2 };//size
+        std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, model);
+        projectile->damping = 0.0f; 
+        projectile->speed = 510.0f; // Set speed to a higher value for faster movement
+		projectile->lifespan = 4.0f; // seconds
+        projectile->name = "projectile"; // Set the name of the player actor
+        projectile->tag = "player"; // Set the name of the player actor
+
+        scene->addActor(std::move(projectile));
 
     }
     
 
+}
+
+void Player::onCollision(Actor* other){
+    
+    if (other->tag == "Enemy") {
+        this->destroyed = true;
+
+    }
 }

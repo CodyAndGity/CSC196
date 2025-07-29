@@ -9,11 +9,18 @@ namespace bonzai {
 		Model() = default;
 		Model(const std::vector<vec2>& points, const vec3& color) :
 			points(points), 
-			color(color) {}
+			color(color) {
+			calculateRadius();
+		}
 
 		void draw(class Renderer& renderer,const vec2& position,float rotation, float scale);
 		void draw(class Renderer& renderer,const Transform& transform);
+
+		float getRadius() const { return radius; }
 	private:
+		void calculateRadius();
+	private:
+		float radius{ 0 };
 		std::vector<vec2> points;
 		vec3 color{ 1,1,1 };
 

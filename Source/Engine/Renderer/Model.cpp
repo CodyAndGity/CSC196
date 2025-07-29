@@ -25,5 +25,19 @@ namespace bonzai {
 	void Model::draw(Renderer& renderer, const Transform& transform){
 		draw(renderer, transform.position, transform.rotation, transform.scale);
 	}
+	/// <summary>
+	/// Calculates and updates the radius of the model based on ,
+	/// the maximum distance of its points from the origin.
+	/// </summary>
+	void Model::calculateRadius(){
+		radius = 0;
+		for (auto& point : points) {
+			float length = point.length();
+			if(length > radius){
+				radius = length;
+			}
+		}
+
+	}
 
 }
