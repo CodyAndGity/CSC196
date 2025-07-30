@@ -68,14 +68,27 @@ void SpaceGame::update(float deltaTime){
         if (enemySpawnTimer <= 0.0f) {
             enemySpawnTimer = 4;
             std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(GameData::enemyPoints,
-                bonzai::vec3{ bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat(),bonzai::random::getRandomFloat() });
-            bonzai::Transform transform{ bonzai::vec2{ bonzai::random::getRandomFloat() * bonzai::getEngine().getRenderer().getWidth()
-                , bonzai::random::getRandomFloat() * bonzai::getEngine().getRenderer().getHeight() }, 0, 3 };
+				//random color
+                bonzai::vec3{ bonzai::random::getReal(),bonzai::random::getReal(),bonzai::random::getReal() });
+            
+            float maxX = (float)bonzai::getEngine().getRenderer().getWidth();
+            float maxY = (float)bonzai::getEngine().getRenderer().getHeight();
+
+			
+            
+            float xPos = bonzai::random::getReal(maxX);
+            float yPos = bonzai::random::getReal(maxY);
+            
+            bonzai::vec2 position{ xPos,yPos };
+
+            bonzai::Transform transform{ position, 0, 3 };
             std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
-            enemy->speed = 100.0f + bonzai::random::getRandomFloat() * 100.0f; // Random speed between 100 and 200
+            enemy->speed = 100.0f + bonzai::random::getReal(100.0f,200.0f); // Random speed between 100 and 200
+
             enemy->damping = 0.0001f;
             enemy->tag = "Enemy";
             scene->addActor(std::move(enemy));
+            
         }
 
         break;
