@@ -10,6 +10,7 @@
 #include "Renderer/Font.h"
 #include "Renderer/Text.h"
 #include "Core/Random.h"
+#include "Core/File.h"
 
 #include <iostream>
 #include <vector>
@@ -21,38 +22,45 @@
 
 int main(int argc, char* argv[]) {
 
-    // Test getInt() variants
-    std::cout << "Integer Functions:\n";
-    std::cout << "getInt(): " << bonzai::random::getInt() << "\n";
-    std::cout << "getInt(): " << bonzai::random::getInt() << "\n";
-    std::cout << "getInt(10): " << bonzai::random::getInt(10) << "\n";
-    std::cout << "getInt(10): " << bonzai::random::getInt(10) << "\n";
-    std::cout << "getInt(5, 15): " << bonzai::random::getInt(5, 15) << "\n";
-    std::cout << "getInt(5, 15): " << bonzai::random::getInt(5, 15) << "\n";
-    std::cout << "getInt(-10, 10): " << bonzai::random::getInt(-10, 10) << "\n\n";
+    // Get current directory path
+    std::cout << "Directory Operations:\n";
+    std::cout << "Current directory: " << bonzai::file::GetCurrentDirectory() << "\n";
 
-    // Test getReal() variants with float
-    std::cout << "Float Functions:\n";
-    std::cout << std::fixed << std::setprecision(6);
-    std::cout << "getReal<float>(): " << bonzai::random::getReal<float>() << "\n";
-    std::cout << "getReal<float>(): " << bonzai::random::getReal<float>() << "\n";
-    std::cout << "getReal<float>(5.0f): " << bonzai::random::getReal<float>(5.0f) << "\n";
-    std::cout << "getReal<float>(2.5f, 7.5f): " << bonzai::random::getReal<float>(2.5f, 7.5f) << "\n";
-    std::cout << "getReal<float>(-1.0f, 1.0f): " << bonzai::random::getReal<float>(-1.0f, 1.0f) << "\n\n";
+    // Set current directory path (current path + "Assets")
+    std::cout << "Setting directory to 'Assets'...\n";
+    bonzai::file::SetCurrentDirectory("Assets");
+    std::cout << "New directory: " << bonzai::file::GetCurrentDirectory() << "\n\n";
 
-    // Test getReal() variants with double
-    std::cout << "Double Functions:\n";
-    std::cout << std::setprecision(10);
-    std::cout << "getReal<double>(): " << bonzai::random::getReal<double>() << "\n";
-    std::cout << "getReal<double>(100.0): " << bonzai::random::getReal<double>(100.0) << "\n";
-    std::cout << "getReal<double>(0.0, 2.0): " << bonzai::random::getReal<double>(0.0, 2.0) << "\n\n";
-
-    // Test getBool()
-    std::cout << "Boolean Functions:\n";
-    for (int i = 0; i < 10; ++i) {
-        std::cout << "getBool(): " << std::boolalpha << bonzai::random::getBool() << "\n";
+    // Get filenames in the current directory
+    std::cout << "Files in Directory:\n";
+    auto filenames = bonzai::file::GetFilesInDirectory(bonzai::file::GetCurrentDirectory());
+    for (const auto& filename : filenames) {
+        std::cout << filename << "\n";
     }
     std::cout << "\n";
+
+    // Get filename (filename.extension) only
+    if (!filenames.empty()) {
+        std::cout << "Path Analysis:\n";
+        std::string filename = bonzai::file::GetFilename(filenames[0]);
+        std::cout << "Filename only: " << filename << "\n";
+
+        // Get extension only
+        std::string ext = bonzai::file::GetExtension(filenames[0]);
+        std::cout << "Extension: " << ext << "\n\n";
+    }
+
+    // Read and display text file
+    std::cout << "Text File Reading:\n";
+    std::string str;
+    bool success = bonzai::file::ReadTextFile("test.txt", str);
+    if (success) {
+        std::cout << "Contents of test.txt:\n";
+        std::cout << str << "\n";
+    }
+    else {
+        std::cout << "Failed to read test.txt\n";
+    }
     // Initialize engine systems
 	bonzai::getEngine().initialize();
    
