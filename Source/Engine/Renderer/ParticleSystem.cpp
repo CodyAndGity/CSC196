@@ -1,0 +1,57 @@
+#include "ParticleSystem.h"
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
+#include "../Renderer/Renderer.h"
+namespace bonzai{
+
+    
+
+    bool ParticleSystem::initialize(){
+		particles.resize(1000); // Preallocate space for 1000 particles
+        return false;
+    }
+    void ParticleSystem::draw( Renderer& renderer){
+        for (auto& particle : particles) {
+            if (particle.active) {
+				renderer.setColor(particle.color.r, particle.color.g, particle.color.b);
+				renderer.drawPoint(particle.position.x, particle.position.y);
+            }
+        }
+	}
+    void ParticleSystem::update(float deltaTime){
+        for (auto& particle : particles) {
+            if (particle.active) {
+				particle.lifespan -= deltaTime;
+				particle.active = particle.lifespan > 0;
+				particle.position += particle.velocity * deltaTime;
+                //particle.position=vec2{ math::wrap(particle.position.x, 0.0f, (float)getEngine().getRenderer().getWidth()),
+				//	math::wrap(particle.position.y, 0.0f, (float)getEngine().getRenderer().getHeight()) };
+            }
+        }
+        
+    }
+    void ParticleSystem::shutdown(){
+		particles.clear();
+
+	}
+
+    void ParticleSystem::addParticle(const Particle& particle)  {
+        Particle* p = getFreeParticle();
+        if (p) {
+            *p = particle;
+            p->active = true;
+		}
+
+    }
+
+    Particle* ParticleSystem::getFreeParticle()  {
+        for(auto& particle : particles) {
+            if (!particle.active) {
+                return &particle;
+            }
+		}
+        return nullptr;
+    }
+
+
+}

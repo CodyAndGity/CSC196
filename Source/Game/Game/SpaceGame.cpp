@@ -8,17 +8,23 @@
 #include "Renderer/Font.h"
 #include "Core/time.h"
 #include "GameData.h"
+#include "Renderer/Text.h"
+#include "Renderer/ParticleSystem.h"
+
 
 bool SpaceGame::initialize(){
 
 	scene = std::make_unique<bonzai::Scene>(this);
 	titleFont = std::make_shared<bonzai::Font>();
-	titleFont->load("SpaceFont.ttf", 128.0f);
+	titleFont->load("radiospacebitmap.ttf", 128.0f);
 
 	uiFont = std::make_shared<bonzai::Font>();
-	uiFont->load("SpaceFont.ttf", 32.0f);
+	uiFont->load("radiospacebitmap.ttf", 32.0f);
+    titleText = std::make_unique< bonzai::Text>(titleFont);
+    scoreText = std::make_unique< bonzai::Text>(uiFont);
+    livesText = std::make_unique< bonzai::Text>(uiFont);
 
-	//titleText = std::make_unique<bonzai::Text>(titleFont);
+	
 	
     std::vector<std::unique_ptr< bonzai::Actor>> actors;
     
@@ -47,6 +53,7 @@ void SpaceGame::update(float deltaTime){
 
     case GameState::STARTING_LEVEL:
     {
+		scene->removeAllActors();
         std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::shipPoints, bonzai::vec3{ 0,0,1 });
         bonzai::Transform transform{ { (float)bonzai::getEngine().getRenderer().getWidth() * 0.5f,
             (float)bonzai::getEngine().getRenderer().getHeight() * 0.5f}//position
@@ -68,8 +75,7 @@ void SpaceGame::update(float deltaTime){
         if (enemySpawnTimer <= 0.0f) {
             enemySpawnTimer = 4;
             std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(GameData::enemyPoints,
-				//random color
-                bonzai::vec3{ bonzai::random::getReal(),bonzai::random::getReal(),bonzai::random::getReal() });
+                bonzai::vec3{ 1,0,1 });
             
             float maxX = (float)bonzai::getEngine().getRenderer().getWidth();
             float maxY = (float)bonzai::getEngine().getRenderer().getHeight();
@@ -84,7 +90,7 @@ void SpaceGame::update(float deltaTime){
             bonzai::Transform transform{ position, 0, 3 };
             std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
             enemy->speed = 100.0f + bonzai::random::getReal(100.0f,200.0f); // Random speed between 100 and 200
-
+			enemy->shootCooldown = 2.0f + bonzai::random::getReal(0.0f, 2.0f); // Random shoot cooldown between 2 and 4 seconds
             enemy->damping = 0.0001f;
             enemy->tag = "Enemy";
             scene->addActor(std::move(enemy));
@@ -93,14 +99,24 @@ void SpaceGame::update(float deltaTime){
 
         break;
 	case GameState::PLAYER_DEAD:
+		stateTimer -= deltaTime;
+        if (stateTimer > 0) {
+            break;
+        }
         lives--;
         if(lives <= 0) {
             gameState = GameState::GAME_OVER;
+			stateTimer = 3.0f;
         } else {
             gameState = GameState::STARTING_LEVEL;
 		}
         break;
     case GameState::GAME_OVER:
+        stateTimer -= deltaTime;
+        if(stateTimer > 0) {
+            break;
+		}
+		gameState = GameState::TITLE;
         break;
     }
     scene->update(bonzai::getEngine().getTime().getDeltaTime());
@@ -110,7 +126,29 @@ void SpaceGame::update(float deltaTime){
 void SpaceGame::shutdown(){
 }
 
-void SpaceGame::draw(){
-    scene->draw(bonzai::getEngine().getRenderer());
+void SpaceGame::draw( bonzai::Renderer& renderer){
 
+    if (gameState == GameState::TITLE) {
+        titleText->create(renderer, "SPACE GAME", bonzai::vec3{ 0,1,0 });
+        titleText->draw(renderer, 20.0f, renderer.getHeight() * 0.5f);
+    }
+    if (gameState == GameState::GAME_OVER) {
+		titleText->create(renderer, "GAME OVER", bonzai::vec3{ 1,0,0 });
+		titleText->draw(renderer, 20.0f, renderer.getHeight() * 0.5f);
+    }
+	scoreText->create(renderer, "SCORE: " + std::to_string(score), bonzai::vec3{ 1,1,1 });
+	scoreText->draw(renderer, 10.0f, 10.0f);
+
+	livesText->create(renderer, "LIVES: " + std::to_string(lives), bonzai::vec3{ 1,1,1 });
+	livesText->draw(renderer, (float)renderer.getWidth() - 200.0f, 10.0f);
+
+    scene->draw(renderer);
+
+	bonzai::getEngine().getParticlesSystem().draw(renderer);
+
+}
+
+void SpaceGame::onDeath(){
+	gameState = GameState::PLAYER_DEAD;
+    stateTimer = 2;
 }

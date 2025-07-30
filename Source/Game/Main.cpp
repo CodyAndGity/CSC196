@@ -22,45 +22,7 @@
 
 int main(int argc, char* argv[]) {
 
-    // Get current directory path
-    std::cout << "Directory Operations:\n";
-    std::cout << "Current directory: " << bonzai::file::GetCurrentDirectory() << "\n";
-
-    // Set current directory path (current path + "Assets")
-    std::cout << "Setting directory to 'Assets'...\n";
     bonzai::file::SetCurrentDirectory("Assets");
-    std::cout << "New directory: " << bonzai::file::GetCurrentDirectory() << "\n\n";
-
-    // Get filenames in the current directory
-    std::cout << "Files in Directory:\n";
-    auto filenames = bonzai::file::GetFilesInDirectory(bonzai::file::GetCurrentDirectory());
-    for (const auto& filename : filenames) {
-        std::cout << filename << "\n";
-    }
-    std::cout << "\n";
-
-    // Get filename (filename.extension) only
-    if (!filenames.empty()) {
-        std::cout << "Path Analysis:\n";
-        std::string filename = bonzai::file::GetFilename(filenames[0]);
-        std::cout << "Filename only: " << filename << "\n";
-
-        // Get extension only
-        std::string ext = bonzai::file::GetExtension(filenames[0]);
-        std::cout << "Extension: " << ext << "\n\n";
-    }
-
-    // Read and display text file
-    std::cout << "Text File Reading:\n";
-    std::string str;
-    bool success = bonzai::file::ReadTextFile("test.txt", str);
-    if (success) {
-        std::cout << "Contents of test.txt:\n";
-        std::cout << str << "\n";
-    }
-    else {
-        std::cout << "Failed to read test.txt\n";
-    }
     // Initialize engine systems
 	bonzai::getEngine().initialize();
    
@@ -73,14 +35,10 @@ int main(int argc, char* argv[]) {
     SDL_Event e;
     bool quit = false;
 
-    //test sound
     
-	std::shared_ptr<bonzai::Font> font = std::make_shared<bonzai::Font>();
-    font->load("radiospacebitmap.ttf", 20);
+    
+	
    
-    bonzai::Text* text = new bonzai:: Text(font);
-    text->create(bonzai::getEngine().getRenderer(), "Press space to start", bonzai::vec3{ 1, 1, 1 });
-
 	//Main loop
     while (!quit) {
 		
@@ -109,15 +67,15 @@ int main(int argc, char* argv[]) {
 
 		
 		
-		game->draw();
-        text->draw(bonzai::getEngine().getRenderer(), 40.0f, 40.0f);
+		game->draw(bonzai::getEngine().getRenderer());
+        
         bonzai::getEngine().getRenderer().present();
        
     }
 	
-    bonzai::getEngine().shutdown();
     game->shutdown();
 	game.release();
+    bonzai::getEngine().shutdown();
 
     return 0;
 }

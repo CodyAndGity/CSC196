@@ -20,7 +20,7 @@ void Projectile::update(float deltaTime) {
 }
 
 void Projectile::onCollision(Actor* other){
-    if (other->tag == "Enemy") {
+    if (other->tag !=tag) {
         this->destroyed = true;
         
 	}

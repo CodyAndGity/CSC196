@@ -2,6 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
+#include "Renderer/ParticleSystem.h"
 namespace bonzai {
 	Engine& getEngine(){
 		static Engine engine;
@@ -18,21 +19,26 @@ namespace bonzai {
 
 		audio = std::make_unique<bonzai::AudioSystem>();
 		audio->initialize();
+
+		particles = std::make_unique<bonzai::ParticleSystem>();
+		particles->initialize();
 		return true;
 	}
 	void Engine::update() {
 		time.tick();
 		input->update();
 		audio->update();
+		particles->update(time.getDeltaTime());
 	}
 	void Engine::shutdown() {
+		particles->shutdown();
 		audio->shutdown();
 		input->shutdown();
 		renderer->shutdown();
 	}
 
 	void Engine::draw(){
-
+		
 	}
 
 

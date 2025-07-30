@@ -3,6 +3,10 @@
 #include "Framework/Scene.h"
 #include "Player.h"
 #include "Framework/Game.h"
+#include "Projectile.h"
+#include "Renderer/Model.h"
+#include "GameData.h"
+
 
 /// <summary>
 /// Updates the enemy's state, moving it towards the player and handling screen wrapping.
@@ -44,6 +48,22 @@ void Enemy::update(float deltaTime){
     transform.position.x = bonzai::math::wrap(transform.position.x, 0.0f, (float)bonzai::getEngine().getRenderer().getWidth());
     transform.position.y = bonzai::math::wrap(transform.position.y, 0.0f, (float)bonzai::getEngine().getRenderer().getHeight());
     
+    shootTimer -= deltaTime;
+    if ( shootTimer <= 0) {
+        shootTimer = shootCooldown; // Reset the shoot timer
+
+        std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::projectilePoints, bonzai::vec3{ 1.0f,0.0f,0.0f });
+        bonzai::Transform transform{ this->transform.position,this->transform.rotation, 2 };//size
+        std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, model);
+        projectile->damping = 0.0f;
+        projectile->speed = 210; 
+        projectile->lifespan = 2.0f; // seconds
+        projectile->name = "projectile"; // Set the name of the player actor
+        projectile->tag = "Enemy"; // Set the name of the player actor
+
+        scene->addActor(std::move(projectile));
+
+    }
     Actor::update(deltaTime);
 }
 

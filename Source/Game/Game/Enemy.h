@@ -4,6 +4,7 @@
 class Enemy : public bonzai::Actor {
 public:
 	float speed{ 200 };
+	float shootCooldown{ 0.0f }; // seconds between shots
 	Enemy() = default;
 	Enemy(const bonzai::Transform& transform, std::shared_ptr<class bonzai::Model> model) :
 		bonzai::Actor{ transform, model }
@@ -16,7 +17,7 @@ public:
 
 
 private:
-
+	float shootTimer{ 0.0f }; // time until next shot
 
 
 

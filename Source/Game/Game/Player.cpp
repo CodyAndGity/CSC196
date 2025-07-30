@@ -5,8 +5,17 @@
 #include "Framework/Scene.h"
 #include "Projectile.h"
 #include "Renderer/Model.h"
+#include "SpaceGame.h"
+#include "Renderer/ParticleSystem.h"
+#include "Core/Random.h"
 void Player::update(float deltaTime){
-   
+    bonzai::Particle particle;
+    particle.position = transform.position;
+    particle.velocity = { bonzai::random::getReal(-400.0f, 400.0f),bonzai::random::getReal(-400.0f, 400.0f) };
+	particle.color = { 1,1,0 };
+    particle.lifespan = 1.0f;
+	bonzai::getEngine().getParticlesSystem().addParticle(particle);
+        
 	bool slowDown = false;
     float rotate = 0;
     if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_A)) {
@@ -48,7 +57,7 @@ void Player::update(float deltaTime){
         projectile->speed = 510.0f; // Set speed to a higher value for faster movement
 		projectile->lifespan = 4.0f; // seconds
         projectile->name = "projectile"; // Set the name of the player actor
-        projectile->tag = "player"; // Set the name of the player actor
+        projectile->tag = "Player"; // Set the name of the player actor
 
         scene->addActor(std::move(projectile));
 
@@ -61,6 +70,6 @@ void Player::onCollision(Actor* other){
     
     if (other->tag == "Enemy") {
         this->destroyed = true;
-
+		dynamic_cast<SpaceGame*>(scene->getGame())->onDeath();
     }
 }

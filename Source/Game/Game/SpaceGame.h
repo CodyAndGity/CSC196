@@ -26,12 +26,15 @@ public:
 
 	void shutdown() override;
 
-	void draw() override;
+	void draw(class bonzai::Renderer& renderer) override;
+
+	void onDeath();
 
 private:
 
 	GameState gameState = GameState::INITIALIZING;
 	float enemySpawnTimer{ 0.0f };
+	float stateTimer{ 0.0f };
 
 	std::shared_ptr<class bonzai::Font> titleFont{ nullptr };
 	std::shared_ptr<class bonzai::Font> uiFont{ nullptr };

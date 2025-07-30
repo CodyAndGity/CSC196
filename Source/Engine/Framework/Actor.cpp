@@ -17,6 +17,6 @@ void bonzai::Actor::draw(Renderer& renderer) {
 }
 
 float bonzai::Actor::getRadius(){
-	 return model ? model->getRadius() * transform.scale : 0.0f; 
+	 return model ? model->getRadius() * transform.scale *0.9f: 0.0f; 
 	
 }
