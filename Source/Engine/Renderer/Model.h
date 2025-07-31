@@ -17,6 +17,7 @@ namespace bonzai {
 		void draw(class Renderer& renderer,const Transform& transform);
 
 		float getRadius() const { return radius; }
+		vec3 getColor() const{ return color; }
 	private:
 		void calculateRadius();
 	private:

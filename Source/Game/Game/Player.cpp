@@ -53,9 +53,10 @@ void Player::update(float deltaTime){
         std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::projectilePoints, bonzai::vec3{ 1.0f,1.0f,1.0f });
         bonzai::Transform transform{ this->transform.position,this->transform.rotation, 2 };//size
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, model);
-        projectile->damping = 0.0f; 
-        projectile->speed = this->velocity.length()+210.0f; // Set speed to a higher value for faster movement
+        projectile->damping = 0.00f; 
+        projectile->speed = this->velocity.length()+50.0f; // Set speed to a higher value for faster movement
 		projectile->lifespan = 4.0f; // seconds
+        projectile->particleColor = model->getColor();
         projectile->name = "projectile"; // Set the name of the player actor
         projectile->tag = "Player"; // Set the name of the player actor
 
@@ -71,5 +72,15 @@ void Player::onCollision(Actor* other){
     if (other->tag == "Enemy") {
         this->destroyed = true;
 		dynamic_cast<SpaceGame*>(scene->getGame())->onDeath();
+        for (int i = 0; i < 500; i++) {
+            bonzai::Particle particle;
+            particle.position = transform.position;
+            particle.velocity = bonzai::random::onUnitCircle() * bonzai::random::getReal(100.0f, 500.0f);
+            particle.color = model->getColor();
+            particle.lifespan = 1.0f;
+            bonzai::getEngine().getParticlesSystem().addParticle(particle);
+
+
+        }
     }
 }

@@ -24,10 +24,10 @@ namespace bonzai {
 		Time& getTime() { return time; }
 	private:
 		bonzai::Time time;
-		std::unique_ptr<Renderer> renderer;//std::make_unique<bonzai::Renderer>();
-		std::unique_ptr<AudioSystem> audio;// = std::make_unique<bonzai::AudioSystem>();
-		std::unique_ptr<InputSystem> input;// = std::make_unique<bonzai::InputSystem>();
-		std::unique_ptr<ParticleSystem> particles;// = std::make_unique<bonzai::InputSystem>();
+		std::unique_ptr<Renderer> renderer;
+		std::unique_ptr<AudioSystem> audio;
+		std::unique_ptr<InputSystem> input;
+		std::unique_ptr<ParticleSystem> particles;
 
 
 	};

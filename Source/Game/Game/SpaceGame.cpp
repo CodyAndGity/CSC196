@@ -60,7 +60,7 @@ void SpaceGame::update(float deltaTime){
             ,0,//rotation
             4 };//size
         std::unique_ptr<Player> player = std::make_unique<Player>(transform, model);
-        player->damping = 0.0001f; // Set damping to a very low value for more responsive movement
+        player->damping = 0.001f; // Set damping to a very low value for more responsive movement
         player->speed = 510.0f; // Set speed to a higher value for faster movement
         player->rotateSpeed = 180.0f; // Set rotation speed 
         player->tag = "Player"; // Set the name of the player actor
@@ -71,7 +71,7 @@ void SpaceGame::update(float deltaTime){
     }
         break;
     case GameState::PLAYING_GAME:
-		enemySpawnTimer -= deltaTime;
+        enemySpawnTimer  -= deltaTime;
         if (enemySpawnTimer <= 0.0f) {
             enemySpawnTimer = 4;
             
@@ -147,11 +147,11 @@ void SpaceGame::spawnEnemy(){
             bonzai::vec3{ 1,0,1 });
 
 		// Spawn enemy at a random position around the player, but not too close
-        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(500.0f,1000.0f)};
+        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(350.0f,650.0f)};
 
         bonzai::Transform transform{ position, bonzai::random::getReal(360.0f), 3};
         std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
-        enemy->speed = 100.0f + bonzai::random::getReal(100.0f, 200.0f); // Random speed between 100 and 200
+        enemy->speed = 50.0f + bonzai::random::getReal(50.0f, 100.0f); // Random speed between 100 and 200
         enemy->shootCooldown = 2.0f + bonzai::random::getReal(0.0f, 2.0f); // Random shoot cooldown between 2 and 4 seconds
         enemy->damping = 0.0001f;
         enemy->tag = "Enemy";

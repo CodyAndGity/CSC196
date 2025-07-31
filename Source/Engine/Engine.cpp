@@ -21,7 +21,7 @@ namespace bonzai {
 		audio->initialize();
 
 		particles = std::make_unique<bonzai::ParticleSystem>();
-		particles->initialize();
+		particles->initialize(5000);
 		return true;
 	}
 	void Engine::update() {
