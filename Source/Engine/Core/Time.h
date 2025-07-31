@@ -18,12 +18,15 @@ namespace bonzai {
 			return time;
 		}
 		float getDeltaTime() const {
-			return deltaTime;
+			return deltaTime*timeScale;
+		}
+		void setTimeScale(float scale) {
+			timeScale= scale ;
 		}
 	private:
 		float time{ 0 };
 		float deltaTime{ 0 };
-
+		float timeScale{ 1 };
 		clock::time_point startTime;
 		clock::time_point frameTime;
 	};

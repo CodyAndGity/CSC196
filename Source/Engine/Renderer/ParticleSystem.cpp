@@ -7,8 +7,8 @@ namespace bonzai{
 
     
 
-    bool ParticleSystem::initialize(){
-		particles.resize(1000); // Preallocate space for 1000 particles
+    bool ParticleSystem::initialize(int poolSize){
+		particles.resize(poolSize); // Preallocate space for 1000 particles
         return false;
     }
     void ParticleSystem::draw( Renderer& renderer){

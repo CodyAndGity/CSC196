@@ -9,12 +9,12 @@
 #include "Renderer/ParticleSystem.h"
 #include "Core/Random.h"
 void Player::update(float deltaTime){
-    bonzai::Particle particle;
+    /*bonzai::Particle particle;
     particle.position = transform.position;
     particle.velocity = { bonzai::random::getReal(-600.0f, 600.0f),bonzai::random::getReal(-600.0f, 600.0f) };
 	particle.color = { 1,1,0 };
-    particle.lifespan = 0.80f;
-	bonzai::getEngine().getParticlesSystem().addParticle(particle);
+    particle.lifespan = 0.20f;
+	bonzai::getEngine().getParticlesSystem().addParticle(particle);*/
         
 	bool slowDown = false;
     float rotate = 0;
@@ -34,7 +34,7 @@ void Player::update(float deltaTime){
 		slowDown = true;
     }
     bonzai::vec2 direction{ 1,0 };
-	bonzai::vec2 velocity = direction.rotate(bonzai::math::degToReg( transform.rotation)) *thrust * speed;
+	bonzai::vec2 velocity = direction.rotate(bonzai::math::degToRad( transform.rotation)) *thrust * speed;
     this->velocity += velocity * deltaTime;
 
     transform.position.x=bonzai::math::wrap(transform.position.x, 0.0f, (float)bonzai::getEngine().getRenderer().getWidth());

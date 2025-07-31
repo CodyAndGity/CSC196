@@ -74,27 +74,8 @@ void SpaceGame::update(float deltaTime){
 		enemySpawnTimer -= deltaTime;
         if (enemySpawnTimer <= 0.0f) {
             enemySpawnTimer = 4;
-            std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(GameData::enemyPoints,
-                bonzai::vec3{ 1,0,1 });
             
-            float maxX = (float)bonzai::getEngine().getRenderer().getWidth();
-            float maxY = (float)bonzai::getEngine().getRenderer().getHeight();
-
-			
-            
-            float xPos = bonzai::random::getReal(maxX);
-            float yPos = bonzai::random::getReal(maxY);
-            
-            bonzai::vec2 position{ xPos,yPos };
-
-            bonzai::Transform transform{ position, 0, 3 };
-            std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
-            enemy->speed = 100.0f + bonzai::random::getReal(100.0f,200.0f); // Random speed between 100 and 200
-			enemy->shootCooldown = 2.0f + bonzai::random::getReal(0.0f, 2.0f); // Random shoot cooldown between 2 and 4 seconds
-            enemy->damping = 0.0001f;
-            enemy->tag = "Enemy";
-            scene->addActor(std::move(enemy));
-            
+			spawnEnemy();
         }
 
         break;
@@ -118,6 +99,12 @@ void SpaceGame::update(float deltaTime){
 		}
 		gameState = GameState::TITLE;
         break;
+    }
+
+    if (bonzai::getEngine().getInput().getKeyDown(SDL_SCANCODE_Q)) {
+        bonzai::getEngine().getTime().setTimeScale(.2f);
+    }else {
+        bonzai::getEngine().getTime().setTimeScale(1.0f);
     }
     scene->update(bonzai::getEngine().getTime().getDeltaTime());
 
@@ -151,4 +138,23 @@ void SpaceGame::draw( bonzai::Renderer& renderer){
 void SpaceGame::onDeath(){
 	gameState = GameState::PLAYER_DEAD;
     stateTimer = 2;
+}
+
+void SpaceGame::spawnEnemy(){
+	Player* player = scene->getActorByName<Player>("Player");
+    if (player) {
+        std::shared_ptr<bonzai::Model> enemyModel = std::make_shared <bonzai::Model>(GameData::enemyPoints,
+            bonzai::vec3{ 1,0,1 });
+
+		// Spawn enemy at a random position around the player, but not too close
+        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(500.0f,1000.0f)};
+
+        bonzai::Transform transform{ position, bonzai::random::getReal(360.0f), 3};
+        std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
+        enemy->speed = 100.0f + bonzai::random::getReal(100.0f, 200.0f); // Random speed between 100 and 200
+        enemy->shootCooldown = 2.0f + bonzai::random::getReal(0.0f, 2.0f); // Random shoot cooldown between 2 and 4 seconds
+        enemy->damping = 0.0001f;
+        enemy->tag = "Enemy";
+        scene->addActor(std::move(enemy));
+    }
 }

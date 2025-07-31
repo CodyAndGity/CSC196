@@ -29,7 +29,9 @@ public:
 	void draw(class bonzai::Renderer& renderer) override;
 
 	void onDeath();
+private:
 
+	void spawnEnemy();
 private:
 
 	GameState gameState = GameState::INITIALIZING;

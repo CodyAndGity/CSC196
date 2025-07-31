@@ -17,7 +17,7 @@ namespace bonzai {
 	class ParticleSystem {
 	public:
 		ParticleSystem() = default;
-		bool initialize();
+		bool initialize(int poolSize=1000);
 
 		void draw(Renderer& renderer);
 		void update(float deltaTime);

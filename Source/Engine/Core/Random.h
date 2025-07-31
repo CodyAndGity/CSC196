@@ -1,4 +1,6 @@
 #pragma once
+#include "../Math/Vector2.h"
+#include "../Math/Math.h"
 #include <cstdlib>
 #include <random>
 namespace bonzai::random {
@@ -85,5 +87,16 @@ namespace bonzai::random {
         return dist(generator());
     }
 
+    /// <summary>
+    /// Returns a 2D vector representing a point on the unit circle at a specified angle in radians.
+    /// </summary>
+    /// <returns>A vec2 containing the x and y coordinates of the point on the unit circle.</returns>
+    inline vec2 onUnitCircle() {
+        float radians = getReal(bonzai::math::twoPi);
+		vec2 result;
+        result.x = math::cosf(radians);
+		result.y = math::sinf(radians);
+		return result;
+    }
 	
 }

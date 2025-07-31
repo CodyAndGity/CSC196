@@ -68,6 +68,44 @@ namespace bonzai {
 
 			return result;
 		}
+
+		/// <summary>
+		/// Calculates the dot product of two 2D vectors.
+		/// </summary>
+		/// <param name="first">The first 2D vector.</param>
+		/// <param name="second">The second 2D vector.</param>
+		/// <returns>The dot product of the two vectors as a float.</returns>
+		static float dot(const Vector2& first, const Vector2& second)  {
+			return first.x * second.x + first.y * second.y;
+		}
+
+		/// <summary>
+		/// Computes the 2D cross product (determinant) of two vectors.
+		/// </summary>
+		/// <param name="first">The first 2D vector.</param>
+		/// <param name="second">The second 2D vector.</param>
+		/// <returns>The scalar value representing the cross product of the two vectors.</returns>
+		static float cross(const Vector2& first, const Vector2& second) {
+			return first.x * second.y - first.y * second.x;
+		}
+
+		/// <summary>
+		/// Calculates the angle between two 2D vectors.
+		/// </summary>
+		/// <param name="first">The first 2D vector.</param>
+		/// <param name="second">The second 2D vector.</param>
+		/// <returns>The angle between the two vectors, in radians.</returns>
+		static float angleBetween(const Vector2& first, const Vector2& second) {
+			return math::acosf(dot(first, second));
+		}
+
+		static float signedAngleBetween(const Vector2& first, const Vector2& second) {
+			float x = dot(first, second);
+			float y = cross(first, second);
+
+			Vector2 result{ x,y };
+			return result.angle();
+		}
 	};
 	using ivec2 = Vector2<int>;
 	using vec2 = Vector2<float>;

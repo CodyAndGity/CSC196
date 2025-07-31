@@ -19,7 +19,7 @@ namespace bonzai::math {
 	/// </summary>
 	/// <param name="degrees">The angle in degrees to convert.</param>
 	/// <returns>The angle in radians.</returns>
-	constexpr float degToReg(float degrees) { return degrees * (pi / 180.0f); }
+	constexpr float degToRad(float degrees) { return degrees * (pi / 180.0f); }
 
 
 	constexpr int wrap(int value, int min, int max) {
@@ -38,7 +38,16 @@ namespace bonzai::math {
 		}
 		return result + min;
 	}
-
+	/// <summary>
+	/// Determines the sign of a value.
+	/// </summary>
+	/// <typeparam name="T">The type of the value.</typeparam>
+	/// <param name="value">The value whose sign is to be determined.</param>
+	/// <returns>Returns 1 if the value is positive, -1 if negative, and 0 if zero.</returns>
+	template<typename T>
+	inline T sign(T value) {
+		return (value<0) ? (T)-1 : (value>0) ?  (T)1 : (T)0;
+	}
 
 	//*pirate music plays*
 	using std::min;
@@ -50,6 +59,7 @@ namespace bonzai::math {
 	using std::sinf;
 	using std::cos;
 	using std::cosf;
+	using std::acosf;
 	using std::atan2;
 	using std::atanf;
 	using std::atan2f;
