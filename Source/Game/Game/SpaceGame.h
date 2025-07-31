@@ -32,10 +32,12 @@ public:
 private:
 
 	void spawnEnemy();
+	void spawnPowerup();
 private:
 
 	GameState gameState = GameState::INITIALIZING;
 	float enemySpawnTimer{ 0.0f };
+	float powerupSpawnTimer{ 0.0f };
 	float stateTimer{ 0.0f };
 
 	std::shared_ptr<class bonzai::Font> titleFont{ nullptr };

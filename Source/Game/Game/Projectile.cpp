@@ -30,7 +30,7 @@ void Projectile::update(float deltaTime) {
 }
 
 void Projectile::onCollision(Actor* other){
-    if (other->tag !=tag) {
+    if (other->tag !=tag && other->tag!="Powerup") {
         this->destroyed = true;
 	}
 }

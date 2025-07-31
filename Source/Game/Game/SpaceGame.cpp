@@ -10,7 +10,7 @@
 #include "GameData.h"
 #include "Renderer/Text.h"
 #include "Renderer/ParticleSystem.h"
-
+#include "Powerup.h"
 
 bool SpaceGame::initialize(){
 
@@ -77,6 +77,13 @@ void SpaceGame::update(float deltaTime){
             
 			spawnEnemy();
         }
+        powerupSpawnTimer  -= deltaTime;
+        if (powerupSpawnTimer <= 0.0f) {
+            powerupSpawnTimer = 4;
+            
+			spawnPowerup();
+        }
+
 
         break;
 	case GameState::PLAYER_DEAD:
@@ -156,5 +163,23 @@ void SpaceGame::spawnEnemy(){
         enemy->damping = 0.0001f;
         enemy->tag = "Enemy";
         scene->addActor(std::move(enemy));
+    }
+}
+void SpaceGame::spawnPowerup(){
+	Player* player = scene->getActorByName<Player>("Player");
+    if (player) {
+        std::shared_ptr<bonzai::Model> powerupModel = std::make_shared <bonzai::Model>(GameData::starPowerupPoints,
+            bonzai::vec3{ 1,1,0 });
+
+		// Spawn enemy at a random position around the player, but not too close
+        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(150.0f,350.0f)};
+
+        bonzai::Transform transform{ position, 0, 3};
+        std::unique_ptr<Powerup> powerup = std::make_unique<Powerup>(transform, powerupModel);
+
+    
+
+        powerup->tag = "Powerup";
+        scene->addActor(std::move(powerup));
     }
 }
