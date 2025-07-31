@@ -11,9 +11,9 @@
 void Player::update(float deltaTime){
     bonzai::Particle particle;
     particle.position = transform.position;
-    particle.velocity = { bonzai::random::getReal(-400.0f, 400.0f),bonzai::random::getReal(-400.0f, 400.0f) };
+    particle.velocity = { bonzai::random::getReal(-600.0f, 600.0f),bonzai::random::getReal(-600.0f, 600.0f) };
 	particle.color = { 1,1,0 };
-    particle.lifespan = 1.0f;
+    particle.lifespan = 0.80f;
 	bonzai::getEngine().getParticlesSystem().addParticle(particle);
         
 	bool slowDown = false;
@@ -54,7 +54,7 @@ void Player::update(float deltaTime){
         bonzai::Transform transform{ this->transform.position,this->transform.rotation, 2 };//size
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, model);
         projectile->damping = 0.0f; 
-        projectile->speed = 510.0f; // Set speed to a higher value for faster movement
+        projectile->speed = this->velocity.length()+210.0f; // Set speed to a higher value for faster movement
 		projectile->lifespan = 4.0f; // seconds
         projectile->name = "projectile"; // Set the name of the player actor
         projectile->tag = "Player"; // Set the name of the player actor

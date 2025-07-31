@@ -6,7 +6,7 @@
 #include "Projectile.h"
 #include "Renderer/Model.h"
 #include "GameData.h"
-
+#include "Core/Random.h"
 
 /// <summary>
 /// Updates the enemy's state, moving it towards the player and handling screen wrapping.
@@ -56,7 +56,7 @@ void Enemy::update(float deltaTime){
         bonzai::Transform transform{ this->transform.position,this->transform.rotation, 2 };//size
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, model);
         projectile->damping = 0.0f;
-        projectile->speed = 210; 
+        projectile->speed = this->speed + bonzai::random::getReal(100.0f)+20;
         projectile->lifespan = 2.0f; // seconds
         projectile->name = "projectile"; // Set the name of the player actor
         projectile->tag = "Enemy"; // Set the name of the player actor

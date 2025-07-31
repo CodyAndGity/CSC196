@@ -2,6 +2,7 @@
 #include "../Math/Vector2.h"
 #include "../Math/Vector3.h"
 #include "../Renderer/Renderer.h"
+#include "../Engine.h"
 namespace bonzai{
 
     
@@ -24,8 +25,9 @@ namespace bonzai{
 				particle.lifespan -= deltaTime;
 				particle.active = particle.lifespan > 0;
 				particle.position += particle.velocity * deltaTime;
-                //particle.position=vec2{ math::wrap(particle.position.x, 0.0f, (float)getEngine().getRenderer().getWidth()),
-				//	math::wrap(particle.position.y, 0.0f, (float)getEngine().getRenderer().getHeight()) };
+                particle.position.x = bonzai::math::wrap(particle.position.x, 0.0f, (float)bonzai::getEngine().getRenderer().getWidth());
+                particle.position.y = bonzai::math::wrap(particle.position.y, 0.0f, (float)bonzai::getEngine().getRenderer().getHeight());
+
             }
         }
         
