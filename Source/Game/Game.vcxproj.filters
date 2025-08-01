@@ -29,7 +29,7 @@
       <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\Powerup.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,8 @@ namespace bonzai {
 
 		float getRadius() const { return radius; }
 		vec3 getColor() const{ return color; }
+		void setColor(vec3 color) { this->color = color; }
+		void smoothSetColor(vec3 color);
 	private:
 		void calculateRadius();
 	private:

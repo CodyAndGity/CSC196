@@ -11,6 +11,7 @@
 #include "Renderer/Text.h"
 #include "Renderer/ParticleSystem.h"
 #include "Powerup.h"
+#include "Core/StringHelper.h"
 
 bool SpaceGame::initialize(){
 
@@ -23,6 +24,7 @@ bool SpaceGame::initialize(){
     titleText = std::make_unique< bonzai::Text>(titleFont);
     scoreText = std::make_unique< bonzai::Text>(uiFont);
     livesText = std::make_unique< bonzai::Text>(uiFont);
+    healthText = std::make_unique< bonzai::Text>(uiFont);
 
 	
 	
@@ -54,7 +56,7 @@ void SpaceGame::update(float deltaTime){
     case GameState::STARTING_LEVEL:
     {
 		scene->removeAllActors();
-        std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::shipPoints, bonzai::vec3{ 0,0,1 });
+        std::shared_ptr<bonzai::Model> model = std::make_shared <bonzai::Model>(GameData::shipPoints, bonzai::vec3{ .5f,.5f,1 });
         bonzai::Transform transform{ { (float)bonzai::getEngine().getRenderer().getWidth() * 0.5f,
             (float)bonzai::getEngine().getRenderer().getHeight() * 0.5f}//position
             ,0,//rotation
@@ -73,16 +75,17 @@ void SpaceGame::update(float deltaTime){
     case GameState::PLAYING_GAME:
         enemySpawnTimer  -= deltaTime;
         if (enemySpawnTimer <= 0.0f) {
-            enemySpawnTimer = 4;
+            enemySpawnTimer = 3;
             
 			spawnEnemy();
         }
         powerupSpawnTimer  -= deltaTime;
         if (powerupSpawnTimer <= 0.0f) {
-            powerupSpawnTimer = 4;
+            powerupSpawnTimer = 15;
             
-			spawnPowerup();
+			spawnPowerup(powerups[bonzai::random::getInt(4)]);
         }
+        
 
 
         break;
@@ -135,6 +138,12 @@ void SpaceGame::draw( bonzai::Renderer& renderer){
 
 	livesText->create(renderer, "LIVES: " + std::to_string(lives), bonzai::vec3{ 1,1,1 });
 	livesText->draw(renderer, (float)renderer.getWidth() - 200.0f, 10.0f);
+    
+    Player* player = dynamic_cast<Player*> (scene->getActorByName("Player"));
+    if (player) {
+        healthText->create(renderer, "HP: " + std::to_string(player->health), bonzai::vec3{ 1,0,0 });
+        healthText->draw(renderer, (float)renderer.getWidth() - 200.0f, 60.0f);
+    }
 
     scene->draw(renderer);
 
@@ -165,21 +174,36 @@ void SpaceGame::spawnEnemy(){
         scene->addActor(std::move(enemy));
     }
 }
-void SpaceGame::spawnPowerup(){
+void SpaceGame::spawnPowerup(std::string name){
 	Player* player = scene->getActorByName<Player>("Player");
     if (player) {
-        std::shared_ptr<bonzai::Model> powerupModel = std::make_shared <bonzai::Model>(GameData::starPowerupPoints,
-            bonzai::vec3{ 1,1,0 });
+        std::shared_ptr<bonzai::Model> powerupModel = nullptr;
+        std::unique_ptr<Powerup> powerup = nullptr;
 
-		// Spawn enemy at a random position around the player, but not too close
-        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(150.0f,350.0f)};
+        if (bonzai::toLower(name) == "star") {
+            powerupModel = std::make_shared <bonzai::Model>(GameData::starPowerupPoints,
+                bonzai::vec3{ 1,1,0 });
+        }else if(bonzai::toLower(name) == "health") {
+            powerupModel = std::make_shared <bonzai::Model>(GameData::healthPowerupPoints,
+                bonzai::vec3{ 0,1,0 });
+        }else if(bonzai::toLower(name) == "tripleshot") {
+            powerupModel = std::make_shared <bonzai::Model>(GameData::tripleShotPowerupPoints,
+                bonzai::vec3{ 0,1,1 });
+        }else if (bonzai::toLower(name) == "laser") {
+            powerupModel = std::make_shared <bonzai::Model>(GameData::laserPowerupPoints,
+                bonzai::vec3{ 0,1,1 });
+        }
+       
+		// Spawn power at a random position around the player, but not too close
+        bonzai::vec2 position{ player->transform.position+bonzai::random::onUnitCircle() *bonzai::random::getReal(200.0f,650.0f)};
 
         bonzai::Transform transform{ position, 0, 3};
-        std::unique_ptr<Powerup> powerup = std::make_unique<Powerup>(transform, powerupModel);
-
+         powerup = std::make_unique<Powerup>(transform, powerupModel);
     
-
         powerup->tag = "Powerup";
+        powerup->name = name;
+        powerup->lifespan = 7 + (float)bonzai::random::getInt(3);
+
         scene->addActor(std::move(powerup));
     }
 }

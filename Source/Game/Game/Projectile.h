@@ -5,7 +5,9 @@
 #include "Math/Vector3.h"
 class Projectile : public bonzai::Actor {
 public:
+	int pierce{ 1 };
 	float speed{ 200 };
+	bool hasParticles{ true };
 	bonzai::vec3 particleColor{ 0,0,0 };
 	Projectile() = default;
 	Projectile(const bonzai::Transform& transform, std::shared_ptr<class bonzai::Model> model) :

@@ -25,6 +25,11 @@ namespace bonzai {
 	void Model::draw(Renderer& renderer, const Transform& transform){
 		draw(renderer, transform.position, transform.rotation, transform.scale);
 	}
+	void Model::smoothSetColor(vec3 color){
+		for (int i = 0; i < 3; i++) {
+			this->color[i] = this->color[i] + 0.2 * (-1 * this->color[i] + color[i]);
+		}
+	}
 	/// <summary>
 	/// Calculates and updates the radius of the model based on ,
 	/// the maximum distance of its points from the origin.

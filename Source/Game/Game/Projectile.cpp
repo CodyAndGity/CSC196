@@ -18,19 +18,25 @@ void Projectile::update(float deltaTime) {
     transform.position.y = bonzai::math::wrap(transform.position.y, 0.0f, (float)bonzai::getEngine().getRenderer().getHeight());
     
     Actor::update(deltaTime);
-    float angle = transform.rotation + bonzai::random::getReal(-30.0f, 30.0f);
-    bonzai::vec2 particleVelocity=bonzai::vec2{ 1,0 }.rotate(bonzai::math::degToRad(angle));
-    particleVelocity *= bonzai::random::getReal(80.0f, 150.0f)*-1;
-    bonzai::Particle particle;
-    particle.position = transform.position;
-    particle.velocity = particleVelocity;
-    particle.color = particleColor;
-    particle.lifespan = bonzai::random::getReal(0.3f,0.6f);
-    bonzai::getEngine().getParticlesSystem().addParticle(particle);
+    if (hasParticles) {
+        float angle = transform.rotation + bonzai::random::getReal(-30.0f, 30.0f);
+        bonzai::vec2 particleVelocity = bonzai::vec2{ 1,0 }.rotate(bonzai::math::degToRad(angle));
+        particleVelocity *= bonzai::random::getReal(80.0f, 150.0f) * -1;
+        bonzai::Particle particle;
+        particle.position = transform.position;
+        particle.velocity = particleVelocity;
+        particle.color = particleColor;
+        particle.lifespan = bonzai::random::getReal(0.3f, 0.6f);
+        bonzai::getEngine().getParticlesSystem().addParticle(particle);
+    }
 }
 
 void Projectile::onCollision(Actor* other){
     if (other->tag !=tag && other->tag!="Powerup") {
-        this->destroyed = true;
+        pierce--;
+        
 	}
+    if (pierce <= 0) {
+        this->destroyed = true;
+    }
 }

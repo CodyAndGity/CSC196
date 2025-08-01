@@ -2,7 +2,7 @@
 #include "../../Engine/Framework/Game.h"
 #include "renderer/Font.h"
 #include "renderer/Text.h"
-
+#include <string>
 #include <memory>
 class SpaceGame :  public bonzai::Game {
 public:
@@ -32,13 +32,14 @@ public:
 private:
 
 	void spawnEnemy();
-	void spawnPowerup();
+	void spawnPowerup(std::string name);
 private:
 
 	GameState gameState = GameState::INITIALIZING;
 	float enemySpawnTimer{ 0.0f };
 	float powerupSpawnTimer{ 0.0f };
 	float stateTimer{ 0.0f };
+	std::string powerups[4] { "star","health","tripleShot","laser"};
 
 	std::shared_ptr<class bonzai::Font> titleFont{ nullptr };
 	std::shared_ptr<class bonzai::Font> uiFont{ nullptr };
@@ -46,4 +47,5 @@ private:
 	std::unique_ptr<class bonzai::Text> titleText{ nullptr };
 	std::unique_ptr<class bonzai::Text> scoreText{ nullptr };
 	std::unique_ptr<class bonzai::Text> livesText{ nullptr };
+	std::unique_ptr<class bonzai::Text> healthText{ nullptr };
 };
